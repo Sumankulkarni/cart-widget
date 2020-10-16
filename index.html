@@ -1,0 +1,290 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cart Design</title>
+  <link rel="stylesheet" type="text/css" href="css/cart.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/table.css" rel="stylesheet">
+</head>
+<style>
+ 
+</style>
+<body>
+  <main>
+     <div class="basket-labels">
+        <ul>
+        <li class="item item-heading">All Item</li>
+        <li class="alert-msg"> 
+          <div class="alert">
+       <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> <strong class="itemnamesucsess">Danger!</strong> Added To Cart
+        </div></li>
+        </ul>
+      </div>
+      <div class="basket">
+      <div class="row">
+        <!-- Dynamic Col Items -->
+       <div class="item-list"></div>
+         <!-- End Dynamic Col Items -->
+      </div>
+    </div>
+
+    <aside>
+
+        <form id="subtotal-form" name="subtotal-form" method="post" action="">
+        <table class="basket-tbl" id="basket-tbl">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="hideANDseek">Price</th>
+              <th>Qty</th>
+              <th>Cost (Rs)</th>
+              <th class="hideANDseek">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+       
+          </tbody>
+        </table>
+
+        <table class="result-tbl">
+          <tbody>
+            <tr class="tbl-foot">
+              <td colspan="3">
+                <label>Items <span class="itemCount"></span></label>
+              </td>
+              <td>
+                <div class="currency">
+                  <input type="text" name="subtotal" class="subtotal" id="subtotal" value="">
+                </div>
+              </td>
+            </tr>
+            <tr class="tbl-foot">
+              <td colspan="3">
+                <label>Discount Amount</label>
+              </td>
+              <td class="currency">
+                <input type="text" name="discountAmt" class="discountAmt" id="discountAmt" value="">
+              </td>
+            </tr>
+             <tr class="tbl-foot">
+              <td colspan="3">
+                <label>Type Discount</label>
+              </td>
+              <td class="currency">
+                <input type="text" name="Typediscount" class="Typediscount" id="Typediscount" value="">
+              </td>
+            </tr>
+            <tr class="res">
+              <td colspan="3">
+                <label>Total Cost</label>
+              </td>
+              <td>
+                <div class="currency">
+                  <input type="text" name="total" class="total" id="total" value="">
+                </div>
+              </td>
+            </tr>        
+          </tbody>
+        </table>
+      </form>
+    
+    </aside>
+  </main>
+</body>
+
+</html>
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/data.js"></script>
+
+<script>
+
+$.each(data, function (key, vl) {
+  var html ='';
+  
+  html +='<div class="col-3">';
+  html +='<div class="basket-product products">';
+  html +='<div class="item">';
+  html +='<div class="product-image">';
+  html +='<div class="discount-label green"> <span class="itemDiscount">'+vl.discount+' </span> <span>%</span></div>';
+  html +='<img src="' + vl.image  + '" alt="Placholder Image 2" class="product-frame">';
+  html +='<div class="price-item">';
+  html +='<div class="row">';
+  html +='<div class="column left">';
+  html +='<p><strong class="itemName"> '+vl.name+'</strong></p>';
+  html +=' <p><strong class="line-mark itemDisplay "> '+vl.price.display+' </strong><strong class="itemActual">  '+vl.price.actual+'</strong></p>';
+  html +='</div>';
+  html +='<div class="column right">';
+  html +='<button class="btn button2 submit_btn" style="float:right">Add to Cart</button>';
+  html +='</div>';
+  html +='</div>';
+  html +='</div>';
+  html +='</div>';
+  html +='</div>';
+  html +='</div>';
+  html +='</div>';
+  
+  $('.item-list').append(html);
+  
+});
+
+
+// Add Button Click//
+
+/////////////////Append To Cart Value/////////////////////
+$('.alert-msg').hide();
+$('.basket-product').on('click', '.submit_btn', function () {
+     var getName = $(this).closest('div[class^=basket-product]').find('.itemName').html();
+     var getActualPrice = $(this).closest('div[class^=basket-product]').find('.itemActual').html();
+     var getDisplayPrice = $(this).closest('div[class^=basket-product]').find('.itemDisplay').html();
+     var getDiscountPrice = $(this).closest('div[class^=basket-product]').find('.itemDiscount').html();
+     
+     var tableItem ='';
+     tableItem +='<tr>';
+     tableItem +='<td class="product">';
+     tableItem +='<label>'+getName+'</label>';
+     tableItem +='</td>';
+     tableItem +='<td class="hideANDseek">';
+     tableItem +='<div class="currency">';
+     tableItem +='<input type="text" name="price" id="price" class="price" value="'+getDisplayPrice+'">';
+     tableItem +='</div>';
+     tableItem +='</td>';
+     tableItem +='<td>';
+     tableItem +='<div class="qty">';
+     tableItem +='<input type="text" name="qty" id="qty" class="qty qtyval" value="1">';
+     tableItem +='<div class="outer-button"><div class="inc button"><i class="fa fa-plus"></i></div><div class="dec button"><i class="fa fa-minus"></i></div></div>';
+     tableItem +='</div>';
+     tableItem +='</td>';
+     tableItem +='<td class="hideANDseek">';     
+     tableItem +='<div class="discountAmount">';
+     tableItem +='<input type="text" name="discount" id="discount" class="discount" value="'+getDiscountPrice+'">';
+     tableItem +='</div>';
+     tableItem +='</td>';
+     tableItem +='<td>';
+     tableItem +='<div class="currency">';
+     tableItem +='<input type="text" name="cost" id="cost" class="cost" value="">';
+     tableItem +='</div>';
+     tableItem +='</td>';
+      tableItem +='<td class="hideANDseek">';
+     tableItem +='<div class="tdisval">';
+     tableItem +='<input type="text" name="totdisval" id="totdisval" class="totdisval" value="">';
+     tableItem +='</div>';
+     tableItem +='</td>';
+     tableItem +='<td class="">';
+     tableItem +='<i class="fa fa-trash-o"></i>';
+     tableItem +='</td>';
+     tableItem +='</tr>';
+     $('.alert-msg').show();
+     $('.itemnamesucsess').html(getName);
+      $("#basket-tbl tbody").append(tableItem);
+        });
+/////////////////End Append To Cart Value/////////////////////      
+
+//////////////////Item Listing Calulation///////////////////
+  $('.basket-product').on('click', '.submit_btn', function () {
+
+  calculate();
+  
+  $(".button").on("click", function() {
+
+    var $button = $(this);
+    var oldQty = $button.parent().parent().find("input").val();
+
+    if ($button.html() == '<i class="fa fa-plus"></i>') {
+      var newQty = parseFloat(oldQty) + 1;
+    } else {
+      // Don't allow decrementing less than zero
+      if (oldQty > 0) {
+        var newQty = parseFloat(oldQty) - 1;
+      } else {
+        newQty = 0;
+      }
+    }
+
+    $button.parent().parent().find("input").val(newQty);
+    calculate();
+  });
+      
+    function calculate() {
+    
+      $(".basket-tbl tr").each(function() {
+        var priceVal = $(this).find('input.price').val();
+        var qtyVal = $(this).find("input.qty").val();
+        var DisVal = $(this).find("input.discount").val();
+
+        var costVal = (priceVal * qtyVal);
+        $(this).find('input.cost').val((costVal).toFixed(2));
+
+              });
+    
+      // Discount Calculation//
+        var disc=0;
+        var discountTotalVal=0;
+       $(".basket-tbl tr").each(function() {
+        var priceVal = $(this).find('input.price').val();
+        var DisVal = $(this).find("input.discount").val();
+         var qtyVal = $(this).find("input.qty").val();
+        var costVal = (priceVal * qtyVal);
+         disc = (costVal*DisVal)/100;
+        $(this).find('input.totdisval').val((disc).toFixed(2));
+       });
+       //Discount Calculation End///
+      var subtotalVal = 0;
+      var discountVal = 0;
+      var qVal=0;
+      $('.cost').each(function() {
+        subtotalVal += parseFloat($(this).val());
+      });
+      $('.totdisval').each(function() {
+        discountVal += parseFloat($(this).val());
+      });
+
+    
+      $('.qtyval').each(function() {
+        qVal += parseFloat($(this).val());
+      });
+       $('.itemCount').html(qVal);
+      $('.subtotal').val((subtotalVal).toFixed(2));
+
+      var TypeDiscount = 100*(parseFloat(discountVal)/parseFloat(subtotalVal)).toFixed(2);
+      var str =  
+      TypeDiscount +='%'; 
+      var total = parseFloat(subtotalVal) - parseFloat(discountVal);
+      $(".discountAmt").val(discountVal);
+      $(".Typediscount").val(TypeDiscount);
+      $(".total").val((total).toFixed(2));
+  }
+
+/////////////Remove Item From List/////////////
+  $(".fa-trash-o").click(function() {
+    $(this).parent().parent().remove();
+    calculate();
+  });
+/////////////End Remove Item From List/////////////
+
+  var cart='';
+
+  $("#subtotal-form").submit(function (e) {
+    e.preventDefault();
+    cart.recalculate();
+    $.ajax({
+      type: $(e.currentTarget).attr('method'),
+      url: $(e.currentTarget).attr('action'),
+      dataType: 'json',
+      data: JSON.stringify(cart.data),
+      success: function () {
+        alert(JSON.stringify(cart.data));
+        console.log(cart.data);
+      },
+      error: function () {
+        alert(JSON.stringify(cart.data));
+        console.log(cart.data);
+      }
+    });
+  });
+
+});
+  ////////////////////////////End Item Listing Calulation///////////
+</script>
